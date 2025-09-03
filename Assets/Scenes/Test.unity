@@ -426,16 +426,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.0459
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.664
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.84691
+      value: -0.847
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -465,6 +477,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
       propertyPath: m_Name
       value: germany_texture
@@ -485,6 +501,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1430279545}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1430279550}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1430279553}
   m_SourcePrefab: {fileID: 100100000, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
 --- !u!1 &389796805
 GameObject:
@@ -1290,6 +1312,40 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1430279550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430279541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 424db93237eedea4b89a268214f2fe71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  germanyRoot: {fileID: 1430279544}
+  csv: {fileID: 4900000, guid: d8f3fefb3ab1c0d4a9f927b02c4af37d, type: 3}
+  markerPrefab: {fileID: 7923181279535342630, guid: bcb67cca2923aa94790579b99953dc63, type: 3}
+  latRange: {x: 47.54935, y: 54.80345}
+  lonRange: {x: 6.114, y: 14.65504}
+  useRaycastToSurface: 1
+  yOffset: 0.02
+  invertZ: 0
+  modelFactory: {fileID: 11400000, guid: 8ec941d9e3657954aab13203e3845bda, type: 2}
+--- !u!114 &1430279553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430279541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d106bceae2ef3e341aaef3ac5c24e0e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefabs: []
 --- !u!1 &1431221385
 GameObject:
   m_ObjectHideFlags: 0

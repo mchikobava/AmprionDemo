@@ -27,3 +27,9 @@
 /app_BackUpThisFolder_ButDontShipItWithYourGame/il2cppOutput/*.json
 /app_BackUpThisFolder_ButDontShipItWithYourGame/il2cppOutput/Symbols/*.json
 /app_BackUpThisFolder_ButDontShipItWithYourGame/il2cppOutput/Symbols/*.txt
+/Assets/Data/EOG25_MS_KW_Therm.csv
+/Assets/Data/EOG25_MS_KW_Therm.csv.meta
+/Assets/Data/EOG25_MS_KW_Therm_short.csv
+/Assets/Data/EOG25_MS_KW_Therm_short.csv.meta
+/Assets/Data/kw_locations.csv
+/Assets/Data/kw_locations.csv.meta
