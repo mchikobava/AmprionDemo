@@ -1,41 +1,51 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "ModelFactory", menuName = "ScriptableObjects/ModelFactory")]
 public class ModelFactory : ScriptableObject
 {
-    [System.Serializable]
-    public class FuelPrefab
-    {
-        public string fuelName;     // z.B. "Erdgas"
-        public GameObject prefab;   // dein zugewiesenes Prefab
-    }
-
-    public List<FuelPrefab> prefabs;
+    [Header("Prefabs für die Brennstoffe")]
+    public GameObject AbfallPrefab;
+    public GameObject BiogasPrefab;
+    public GameObject BraunkohlePrefab;
+    public GameObject ErdgasPrefab;
+    public GameObject KernenergiePrefab;
+    public GameObject KuppelgasPrefab;
+    public GameObject MineraloelproduktePrefab;
+    public GameObject OelschieferPrefab;
+    public GameObject SonstigePrefab;
+    public GameObject SteinkohlePrefab;
 
     public GameObject BuildIcon(string fuel, float powerMw = 0f)
     {
         if (string.IsNullOrEmpty(fuel)) return null;
 
-        string key = fuel.Trim().ToLowerInvariant();
-
-        // Suche passendes Prefab
-        foreach (var fp in prefabs)
+        GameObject prefab = null;
+        switch (fuel)
         {
-            if (fp.fuelName.Trim().ToLowerInvariant() == key && fp.prefab != null)
-            {
-                // Instanz erzeugen
-                var go = Instantiate(fp.prefab);
-                // Skalierung anhand Leistung anpassen (optional)
-                float scale = ComputeScaleFromPower(powerMw);
-                go.transform.localScale *= scale;
-                return go;
-            }
+            case "Abfall": prefab = AbfallPrefab; break;
+            case "Biogas": prefab = BiogasPrefab; break;
+            case "Braunkohle": prefab = BraunkohlePrefab; break;
+            case "Erdgas": prefab = ErdgasPrefab; break;
+            case "Kernenergie": prefab = KernenergiePrefab; break;
+            case "Kuppelgas": prefab = KuppelgasPrefab; break;
+            case "Mineraloelprodukte": prefab = MineraloelproduktePrefab; break;
+            case "Oelschiefer": prefab = OelschieferPrefab; break;
+            case "Sonstige": prefab = SonstigePrefab; break;
+            case "Steinkohle": prefab = SteinkohlePrefab; break;
         }
 
-        // Fallback: kleiner Cube falls kein Mapping
+        if (prefab != null)
+        {
+            var go = Instantiate(prefab);
+            float scale = ComputeScaleFromPower(powerMw);
+            go.transform.localScale *= scale;
+            go.name = $"icon_{fuel}";
+            return go;
+        }
+
+        // Fallback: kleiner Cube falls nichts zugewiesen
         var fallback = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        Object.Destroy(fallback.GetComponent<Collider>());
+        DestroyImmediate(fallback.GetComponent<Collider>());
         fallback.name = $"icon_{fuel}";
         fallback.transform.localScale = Vector3.one * ComputeScaleFromPower(powerMw);
         return fallback;
