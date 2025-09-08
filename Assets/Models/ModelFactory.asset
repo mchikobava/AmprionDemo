@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d106bceae2ef3e341aaef3ac5c24e0e0, type: 3}
   m_Name: ModelFactory
   m_EditorClassIdentifier: 
-  AbfallPrefab: {fileID: 7923181279535342630, guid: bcb67cca2923aa94790579b99953dc63, type: 3}
-  BiogasPrefab: {fileID: 7923181279535342630, guid: bcb67cca2923aa94790579b99953dc63, type: 3}
-  BraunkohlePrefab: {fileID: 7923181279535342630, guid: bcb67cca2923aa94790579b99953dc63, type: 3}
-  ErdgasPrefab: {fileID: 7923181279535342630, guid: bcb67cca2923aa94790579b99953dc63, type: 3}
-  KernenergiePrefab: {fileID: 7923181279535342630, guid: bcb67cca2923aa94790579b99953dc63, type: 3}
-  KuppelgasPrefab: {fileID: 7923181279535342630, guid: bcb67cca2923aa94790579b99953dc63, type: 3}
+  AbfallPrefab: {fileID: 919132149155446097, guid: 9cbc43e087560fa47910b8def9a7c674, type: 3}
+  BiogasPrefab: {fileID: 919132149155446097, guid: f4421674f6f36c248a865b5cdea02ab8, type: 3}
+  BraunkohlePrefab: {fileID: 919132149155446097, guid: 3bb69e85714476147b5c325bcb12a44d, type: 3}
+  ErdgasPrefab: {fileID: 919132149155446097, guid: a788cb4b25bbf4549a3098432c8515af, type: 3}
+  KernenergiePrefab: {fileID: 919132149155446097, guid: 0b76a1b37eb51bd4bbfabb8ad10a3746, type: 3}
+  KuppelgasPrefab: {fileID: 919132149155446097, guid: a788cb4b25bbf4549a3098432c8515af, type: 3}
   MineraloelproduktePrefab: {fileID: 7923181279535342630, guid: bcb67cca2923aa94790579b99953dc63, type: 3}
   OelschieferPrefab: {fileID: 7923181279535342630, guid: bcb67cca2923aa94790579b99953dc63, type: 3}
   SonstigePrefab: {fileID: 7923181279535342630, guid: bcb67cca2923aa94790579b99953dc63, type: 3}
-  SteinkohlePrefab: {fileID: 7923181279535342630, guid: bcb67cca2923aa94790579b99953dc63, type: 3}
+  SteinkohlePrefab: {fileID: 919132149155446097, guid: 3bb69e85714476147b5c325bcb12a44d, type: 3}
