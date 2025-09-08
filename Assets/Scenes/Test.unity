@@ -1327,7 +1327,7 @@ MonoBehaviour:
   latRange: {x: 47.54935, y: 54.80345}
   lonRange: {x: 6.114, y: 14.65504}
   useRaycastToSurface: 1
-  yOffset: 0.02
+  yOffset: 0.1
   invertZ: 0
   modelFactory: {fileID: 11400000, guid: 8ec941d9e3657954aab13203e3845bda, type: 2}
 --- !u!1 &1431221385
