@@ -500,10 +500,10 @@ PrefabInstance:
       addedObject: {fileID: 1430279546}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1430279545}
+      addedObject: {fileID: 1430279553}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1430279550}
+      addedObject: {fileID: 1430279554}
   m_SourcePrefab: {fileID: 100100000, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
 --- !u!1 &389796805
 GameObject:
@@ -1119,7 +1119,7 @@ MonoBehaviour:
   _maxSelectingInteractors: -1
   _data: {fileID: 0}
   _pointableElement: {fileID: 1430279546}
-  _rigidbody: {fileID: 1430279547}
+  _rigidbody: {fileID: 0}
   _grabSource: {fileID: 0}
   _useClosestPointAsGrabSource: 0
   _releaseDistance: 0
@@ -1142,7 +1142,7 @@ MonoBehaviour:
   _maxSelectingInteractors: -1
   _data: {fileID: 0}
   _pointableElement: {fileID: 1430279546}
-  _rigidbody: {fileID: 1430279547}
+  _rigidbody: {fileID: 0}
   _physicsGrabbable: {fileID: 0}
   _resetGrabOnGrabsUpdated: 1
   _scoringModifier:
@@ -1239,27 +1239,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
   m_PrefabInstance: {fileID: 268006066}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &1430279545
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1430279541}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 6.413004, y: 0.3666166, z: 8.686447}
-  m_Center: {x: 0.0034737587, y: 0.09775162, z: 0.035025597}
 --- !u!114 &1430279546
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1309,7 +1288,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1430279550
+--- !u!114 &1430279553
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1318,18 +1297,48 @@ MonoBehaviour:
   m_GameObject: {fileID: 1430279541}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 424db93237eedea4b89a268214f2fe71, type: 3}
+  m_Script: {fileID: 11500000, guid: e635c87671215c349b8b452a2e78b46d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   germanyRoot: {fileID: 1430279544}
   csv: {fileID: 4900000, guid: d8f3fefb3ab1c0d4a9f927b02c4af37d, type: 3}
   markerPrefab: {fileID: 7923181279535342630, guid: bcb67cca2923aa94790579b99953dc63, type: 3}
+  modelFactory: {fileID: 11400000, guid: 8ec941d9e3657954aab13203e3845bda, type: 2}
   latRange: {x: 47.54935, y: 54.80345}
   lonRange: {x: 6.114, y: 14.65504}
   useRaycastToSurface: 1
-  yOffset: 0.1
+  yOffset: 0.02
   invertZ: 0
-  modelFactory: {fileID: 11400000, guid: 8ec941d9e3657954aab13203e3845bda, type: 2}
+  useMeshColliderOnly: 1
+  meshColliderLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  validateWithMeshBounds: 1
+  boundaryMargin: 0.95
+  showDebugMarkers: 1
+  logPlacementDetails: 0
+--- !u!64 &1430279554
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1430279541}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 3931546471491194837, guid: 31b7615c95062d24fa58331845de64c0, type: 3}
 --- !u!1 &1431221385
 GameObject:
   m_ObjectHideFlags: 0

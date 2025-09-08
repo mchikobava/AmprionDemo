@@ -164,6 +164,12 @@ public class GISMappingController : MonoBehaviour
             // Weltposition
             var worldPos = GeoToWorld(lat, lon);
 
+            // Validate that position is within Germany mesh bounds
+            if (!worldBounds.Contains(new Vector3(worldPos.x, worldBounds.center.y, worldPos.z)))
+            {
+                continue; // Skip this marker if outside bounds
+            }
+
             if (useRaycastToSurface && Physics.Raycast(worldPos + Vector3.up * 10f, Vector3.down, out var hit, 100f))
                 worldPos = hit.point + Vector3.up * yOffset;
             else
