@@ -94,7 +94,7 @@ MonoBehaviour:
     x: 0
     y: 0
     width: 131
-    height: 437.5
+    height: 437
   m_MinSize: {x: 201, y: 226}
   m_MaxSize: {x: 4001, y: 4026}
   m_ActualView: {fileID: 14}
@@ -118,9 +118,9 @@ MonoBehaviour:
   m_Position:
     serializedVersion: 2
     x: 0
-    y: 437.5
+    y: 437
     width: 1060
-    height: 303.5
+    height: 304
   m_MinSize: {x: 231, y: 276}
   m_MaxSize: {x: 10001, y: 10026}
   m_ActualView: {fileID: 12}
@@ -246,7 +246,7 @@ MonoBehaviour:
     x: 0
     y: 0
     width: 1060
-    height: 437.5
+    height: 437
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
@@ -270,7 +270,7 @@ MonoBehaviour:
     x: 131
     y: 0
     width: 929
-    height: 437.5
+    height: 437
   m_MinSize: {x: 202, y: 226}
   m_MaxSize: {x: 4002, y: 4026}
   m_ActualView: {fileID: 16}
@@ -301,9 +301,9 @@ MonoBehaviour:
   m_Pos:
     serializedVersion: 2
     x: 0
-    y: 461.5
+    y: 461
     width: 1059
-    height: 277.5
+    height: 278
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -345,7 +345,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 10190100
     m_LastClickedID: 71952
-    m_ExpandedIDs: 00000000a6170100
+    m_ExpandedIDs: 00000000e0170100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -374,7 +374,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000a6170100
+    m_ExpandedIDs: 00000000e0170100
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -505,7 +505,7 @@ MonoBehaviour:
     x: 0
     y: 24
     width: 130
-    height: 411.5
+    height: 411
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -1098,7 +1098,7 @@ MonoBehaviour:
   m_AudioPlay: 0
   m_DebugDrawModesUseInteractiveLightBakingData: 0
   m_Position:
-    m_Target: {x: -1.228866, y: -0.2576959, z: 2.3039877}
+    m_Target: {x: -1.4670048, y: -0.37074512, z: -1.1790268}
     speed: 2
     m_Value: {x: -1.228866, y: -0.2576959, z: 2.3039877}
   m_RenderMode: 0
@@ -1146,15 +1146,15 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0, y: 1, z: 0, w: 0}
+    m_Target: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
     speed: 2
     m_Value: {x: 0, y: 1, z: 0, w: 0}
   m_Size:
-    m_Target: 6.3006854
+    m_Target: 20.078106
     speed: 2
     m_Value: 6.3006854
   m_Ortho:
-    m_Target: 0
+    m_Target: 1
     speed: 2
     m_Value: 0
   m_CameraSettings:
@@ -1210,7 +1210,7 @@ MonoBehaviour:
     x: 132
     y: 24
     width: 927
-    height: 411.5
+    height: 411
   m_SerializedDataModeController:
     m_DataMode: 0
     m_PreferredDataMode: 0
@@ -1228,7 +1228,7 @@ MonoBehaviour:
   m_ShowGizmos: 0
   m_TargetDisplay: 0
   m_ClearColor: {r: 0, g: 0, b: 0, a: 0}
-  m_TargetSize: {x: 1854, y: 781}
+  m_TargetSize: {x: 1854, y: 780}
   m_TextureFilterMode: 0
   m_TextureHideFlags: 61
   m_RenderIMGUI: 1
@@ -1245,8 +1245,8 @@ MonoBehaviour:
     vZoomLockedByDefault: 0
     m_HBaseRangeMin: -463.5
     m_HBaseRangeMax: 463.5
-    m_VBaseRangeMin: -195.25
-    m_VBaseRangeMax: 195.25
+    m_VBaseRangeMin: -195
+    m_VBaseRangeMax: 195
     m_HAllowExceedBaseRangeMin: 1
     m_HAllowExceedBaseRangeMax: 1
     m_VAllowExceedBaseRangeMin: 1
@@ -1265,9 +1265,9 @@ MonoBehaviour:
       x: 0
       y: 21
       width: 927
-      height: 390.5
+      height: 390
     m_Scale: {x: 1, y: 1}
-    m_Translation: {x: 463.5, y: 195.25}
+    m_Translation: {x: 463.5, y: 195}
     m_MarginLeft: 0
     m_MarginRight: 0
     m_MarginTop: 0
@@ -1275,12 +1275,12 @@ MonoBehaviour:
     m_LastShownAreaInsideMargins:
       serializedVersion: 2
       x: -463.5
-      y: -195.25
+      y: -195
       width: 927
-      height: 390.5
+      height: 390
     m_MinimalGUI: 1
   m_defaultScale: 1
-  m_LastWindowPixelSize: {x: 1854, y: 823}
+  m_LastWindowPixelSize: {x: 1854, y: 822}
   m_ClearInEditMode: 1
   m_NoCameraWarning: 1
   m_LowResolutionForAspectRatios: 01000000000000000000

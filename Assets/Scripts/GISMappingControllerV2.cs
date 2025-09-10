@@ -33,9 +33,41 @@ public class GISMappingControllerV2 : MonoBehaviour
     public bool showDebugMarkers = true;
     public bool logPlacementDetails = false;
 
+    [Header("Energy Provider Colors")]
+    public bool useColorCoding = true;
+    public Color defaultColor = Color.white;
+    public bool colorByUENB = false; // Color by grid operator (UENB) instead of energy type
+
     private Bounds worldBounds;
     private List<Collider> meshColliders = new List<Collider>();
     private List<Collider> boxColliders = new List<Collider>();
+
+    // Energy provider color mapping
+    private Dictionary<string, Color> energyColors = new Dictionary<string, Color>
+    {
+        { "Erdgas", new Color(0.2f, 0.8f, 1.0f) },           // Light blue
+        { "Steinkohle", new Color(0.3f, 0.3f, 0.3f) },       // Dark gray
+        { "Braunkohle", new Color(0.6f, 0.4f, 0.2f) },       // Brown
+        { "Kernenergie", new Color(1.0f, 0.8f, 0.0f) },      // Yellow
+        { "Windenergie", new Color(0.8f, 1.0f, 0.8f) },      // Light green
+        { "Solarenergie", new Color(1.0f, 0.6f, 0.0f) },     // Orange
+        { "Wasserkraft", new Color(0.0f, 0.6f, 1.0f) },      // Blue
+        { "Biogas", new Color(0.4f, 0.8f, 0.4f) },           // Green
+        { "Mineraloelprodukte", new Color(0.8f, 0.4f, 0.0f) }, // Dark orange
+        { "Kuppelgas", new Color(0.6f, 0.6f, 0.8f) },        // Light purple
+        { "Abfall", new Color(0.5f, 0.5f, 0.5f) },           // Gray
+        { "Sonstige", new Color(0.8f, 0.8f, 0.8f) }          // Light gray
+    };
+
+    // UENB (Grid Operator) color mapping
+    private Dictionary<string, Color> uenbColors = new Dictionary<string, Color>
+    {
+        { "TenneT", new Color(1.0f, 0.2f, 0.2f) },          // Red
+        { "50Hertz", new Color(0.2f, 0.8f, 0.2f) },         // Green
+        { "Amprion", new Color(0.2f, 0.2f, 1.0f) },         // Blue
+        { "TransnetBW", new Color(1.0f, 0.8f, 0.2f) },      // Yellow
+        { "Unknown", new Color(0.6f, 0.6f, 0.6f) }          // Gray
+    };
 
     void Awake()
     {
@@ -148,6 +180,7 @@ public class GISMappingControllerV2 : MonoBehaviour
         int NameIdx = FindColumnIndex(header, "name", "KRAFTWERKSNAME", "NAME", "STATION");
         int FuelIdx = FindColumnIndex(header, "tech", "ENERGIETRAEGER", "FUEL", "FUELTYPE");
         int Pidx = FindColumnIndex(header, "power_mw", "P_INST_MW", "POWER_MW", "CAPACITY_MW");
+        int UENBIdx = FindColumnIndex(header, "UENB", "GRID_OPERATOR", "TSO");
 
         if (LatIdx < 0 || LonIdx < 0)
         {
@@ -203,7 +236,7 @@ public class GISMappingControllerV2 : MonoBehaviour
             }
 
             // Create marker
-            CreateMarker(worldPos, parts, LatIdx, LonIdx, NameIdx, FuelIdx, Pidx, fuelParents, ref created);
+            CreateMarker(worldPos, parts, LatIdx, LonIdx, NameIdx, FuelIdx, Pidx, UENBIdx, fuelParents, ref created);
         }
 
         Debug.Log($"Placed {created} markers, skipped {skipped} invalid positions in {fuelParents.Count} fuel groups.");
@@ -211,6 +244,7 @@ public class GISMappingControllerV2 : MonoBehaviour
         if (showDebugMarkers)
         {
             CreateDebugMarkers(parent);
+            CreateColorLegend(parent);
         }
     }
 
@@ -272,12 +306,13 @@ public class GISMappingControllerV2 : MonoBehaviour
         }
     }
 
-    void CreateMarker(Vector3 worldPos, string[] parts, int LatIdx, int LonIdx, int NameIdx, int FuelIdx, int Pidx, 
+    void CreateMarker(Vector3 worldPos, string[] parts, int LatIdx, int LonIdx, int NameIdx, int FuelIdx, int Pidx, int UENBIdx,
                      Dictionary<string, Transform> fuelParents, ref int created)
     {
         // Read data
         string name = (NameIdx >= 0 && NameIdx < parts.Length) ? SanitizeName(parts[NameIdx]) : null;
         string fuel = (FuelIdx >= 0 && FuelIdx < parts.Length) ? (parts[FuelIdx]?.Trim() ?? "") : "";
+        string uenb = (UENBIdx >= 0 && UENBIdx < parts.Length) ? (parts[UENBIdx]?.Trim() ?? "") : "";
         float power = 0f;
         if (Pidx >= 0 && Pidx < parts.Length) TryParseFloat(parts[Pidx], out power);
 
@@ -303,6 +338,9 @@ public class GISMappingControllerV2 : MonoBehaviour
                 float powerScale = CalculatePowerScale(power);
                 FitIconToMap(icon, worldBounds, 0.01f, powerScale);
                 
+                // Apply color coding based on energy provider or UENB
+                ApplyColorCoding(icon, fuel, uenb);
+                
                 // Disable physics
                 DisablePhysics(icon);
                 
@@ -312,12 +350,15 @@ public class GISMappingControllerV2 : MonoBehaviour
         }
         else
         {
-            // Fallback cube
+            // Fallback cube with color coding
             var fallback = GameObject.CreatePrimitive(PrimitiveType.Cube);
             Destroy(fallback.GetComponent<Collider>());
             fallback.transform.SetParent(container.transform, false);
             fallback.transform.localScale = Vector3.one * 0.8f;
             fallback.name = "icon_fallback";
+            
+            // Apply color coding to fallback
+            ApplyColorCoding(fallback, fuel, uenb);
         }
 
         created++;
@@ -417,6 +458,50 @@ public class GISMappingControllerV2 : MonoBehaviour
                 Destroy(marker.GetComponent<Collider>());
             }
         }
+    }
+
+    void CreateColorLegend(Transform parent)
+    {
+        if (!useColorCoding) return;
+
+        var legendParent = new GameObject("Color_Legend").transform;
+        legendParent.SetParent(parent, true);
+
+        // Position legend in the top-right corner of Germany
+        Vector3 legendPosition = new Vector3(worldBounds.max.x - worldBounds.size.x * 0.1f, 
+                                           worldBounds.max.y + 0.5f, 
+                                           worldBounds.max.z - worldBounds.size.z * 0.1f);
+        legendParent.position = legendPosition;
+
+        // Create legend items for each type
+        float spacing = 0.1f;
+        int index = 0;
+        
+        var colorDict = colorByUENB ? uenbColors : energyColors;
+        string legendType = colorByUENB ? "UENB" : "Energy";
+        
+        foreach (var kvp in colorDict)
+        {
+            var legendItem = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            legendItem.name = $"Legend_{legendType}_{kvp.Key}";
+            legendItem.transform.SetParent(legendParent, true);
+            legendItem.transform.localPosition = new Vector3(0, -index * spacing, 0);
+            legendItem.transform.localScale = Vector3.one * 0.02f;
+
+            var renderer = legendItem.GetComponent<Renderer>();
+            var material = new Material(renderer.material);
+            material.color = kvp.Value;
+            renderer.material = material;
+
+            Destroy(legendItem.GetComponent<Collider>());
+
+            // Add text label (optional - requires TextMeshPro or UI Text)
+            // For now, we'll just use the object name for identification
+
+            index++;
+        }
+
+        Debug.Log($"Created color legend with {colorDict.Count} {legendType.ToLower()} types");
     }
 
     // Helper methods
@@ -529,6 +614,71 @@ public class GISMappingControllerV2 : MonoBehaviour
 #else
             GameObject.Destroy(existingParent.gameObject);
 #endif
+        }
+    }
+
+    Color GetEnergyProviderColor(string fuelType)
+    {
+        if (!useColorCoding || string.IsNullOrEmpty(fuelType))
+            return defaultColor;
+
+        // Try exact match first
+        if (energyColors.TryGetValue(fuelType, out Color color))
+            return color;
+
+        // Try case-insensitive match
+        var key = energyColors.Keys.FirstOrDefault(k => 
+            string.Equals(k, fuelType, StringComparison.OrdinalIgnoreCase));
+        
+        if (key != null)
+            return energyColors[key];
+
+        // Return default color for unknown fuel types
+        return defaultColor;
+    }
+
+    Color GetUENBColor(string uenb)
+    {
+        if (!useColorCoding || string.IsNullOrEmpty(uenb))
+            return defaultColor;
+
+        // Try exact match first
+        if (uenbColors.TryGetValue(uenb, out Color color))
+            return color;
+
+        // Try case-insensitive match
+        var key = uenbColors.Keys.FirstOrDefault(k => 
+            string.Equals(k, uenb, StringComparison.OrdinalIgnoreCase));
+        
+        if (key != null)
+            return uenbColors[key];
+
+        // Return default color for unknown UENB
+        return defaultColor;
+    }
+
+    void ApplyColorCoding(GameObject obj, string fuelType, string uenb)
+    {
+        if (!useColorCoding) return;
+
+        Color color;
+        if (colorByUENB)
+        {
+            color = GetUENBColor(uenb);
+        }
+        else
+        {
+            color = GetEnergyProviderColor(fuelType);
+        }
+        
+        // Apply color to all renderers in the object hierarchy
+        var renderers = obj.GetComponentsInChildren<Renderer>();
+        foreach (var renderer in renderers)
+        {
+            // Create a new material instance to avoid affecting other objects
+            var material = new Material(renderer.material);
+            material.color = color;
+            renderer.material = material;
         }
     }
 
