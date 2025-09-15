@@ -80,7 +80,7 @@ public class GISMappingControllerV2 : MonoBehaviour
         // Configure layer mask for mesh colliders only
         ConfigureMeshColliderLayerMask();
         
-        Place();
+
     }
 
     void CalculateWorldBounds()
@@ -697,9 +697,9 @@ public class GISMappingControllerV2 : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
-        {
-            Place();
-        }
+//        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+//        {
+  //          Place();
+  //      }
     }
 }
