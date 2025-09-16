@@ -539,15 +539,16 @@ public class PowerPlantManager : MonoBehaviour
             return;
         }
 
-        var allModels = powerPlantParent.GetComponentsInChildren<Renderer>();
-        Debug.Log($"PowerPlantManager: Found {allModels.Length} renderers to show");
+        Debug.Log($"PowerPlantManager: Showing all {powerPlantParent.childCount} power plant containers");
 
-        foreach (var renderer in allModels)
+        // Show all power plant containers
+        for (int i = 0; i < powerPlantParent.childCount; i++)
         {
-            SetPowerPlantVisibility(renderer.gameObject, true);
+            var container = powerPlantParent.GetChild(i);
+            SetPowerPlantVisibility(container.gameObject, true);
         }
-        Debug.Log($"PowerPlantManager: Showing all {allModels.Length} power plants.");
 
+        Debug.Log($"PowerPlantManager: Showing all {powerPlantParent.childCount} power plants.");
     }
 
     /// <summary>
@@ -1146,66 +1147,74 @@ public class PowerPlantManager : MonoBehaviour
     void Update()
     {
         // Individual power plant type keys
-        if (Keyboard.current != null && Keyboard.current.numpad0Key.wasPressedThisFrame
-             || OVRInput.GetDown(OVRInput.Button.One))
+        if ((Keyboard.current != null && Keyboard.current.numpad1Key.wasPressedThisFrame) ||
+            OVRInput.GetDown(OVRInput.Button.One))
         {
             Debug.Log("PowerPlantManager: 0 key pressed - showing garbage (Abfall) power plants");
             ShowOnlyAbfallPowerPlants();
         }
 
-        if (Keyboard.current != null && Keyboard.current.numpad1Key.wasPressedThisFrame
-              || OVRInput.GetDown(OVRInput.Button.Two))
+        if ((Keyboard.current != null && Keyboard.current.numpad2Key.wasPressedThisFrame) ||
+            OVRInput.GetDown(OVRInput.Button.Two))
         {
             Debug.Log("PowerPlantManager: 1 key pressed - showing gas (Erdgas) power plants");
             ShowOnlyErdgasPowerPlants();
-            ShowOnlyBiogasPowerPlants();
-            ShowOnlyKuppelgasPowerPlants();
         }
 
-        if (Keyboard.current != null && Keyboard.current.numpad2Key.wasPressedThisFrame
-              || OVRInput.GetDown(OVRInput.Button.Three))
+        if ((Keyboard.current != null && Keyboard.current.numpad3Key.wasPressedThisFrame) ||
+            OVRInput.GetDown(OVRInput.Button.Three))
         {
             Debug.Log("PowerPlantManager: 2 key pressed - showing hard coal (Steinkohle) power plants");
             ShowOnlySteinkohlePowerPlants();
-            ShowOnlyBraunkohlePowerPlants();
         }
 
-        if (Keyboard.current != null && Keyboard.current.numpad5Key.wasPressedThisFrame
-              || OVRInput.GetDown(OVRInput.Button.Four))
-        {
-            Debug.Log("PowerPlantManager: 5 key pressed - showing hydro (Wasserkraft) power plants");
-            ShowOnlyWasserkraftPowerPlants();
-            ShowOnlySonstigePowerPlants();
-        }
-
-        if (Keyboard.current != null && Keyboard.current.numpad3Key.wasPressedThisFrame)
+        if ((Keyboard.current != null && Keyboard.current.numpad4Key.wasPressedThisFrame))
         {
             Debug.Log("PowerPlantManager: 3 key pressed - showing nuclear (Kernenergie) power plants");
             ShowOnlyKernenergiePowerPlants();
         }
 
-        if (Keyboard.current != null && Keyboard.current.numpad4Key.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.numpad5Key.wasPressedThisFrame
+             || OVRInput.GetDown(OVRInput.Button.Four))
         {
             Debug.Log("PowerPlantManager: 4 key pressed - showing oil (Mineraloelprodukte) power plants");
             ShowOnlyMineraloelproduktePowerPlants();
         }
 
+        if ((Keyboard.current != null && Keyboard.current.numpad5Key.wasPressedThisFrame))
+        {
+            Debug.Log("PowerPlantManager: 5 key pressed - showing hydro (Wasserkraft) power plants");
+            ShowOnlyWasserkraftPowerPlants();
+        }
+
 
 
         // Show all power plants on Space key
-        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame
-        || OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
+        if ((Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame) ||
+            OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
         {
             Debug.Log("PowerPlantManager: Space key pressed - showing all power plants");
             ShowAllPowerPlants();
         }
 
         // Hide all power plants on C key
-        if (Keyboard.current != null && Keyboard.current.cKey.wasPressedThisFrame
-              || OVRInput.GetDown(OVRInput.Button.SecondaryHandTrigger))
+        if ((Keyboard.current != null && Keyboard.current.cKey.wasPressedThisFrame) ||
+            OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
         {
             Debug.Log("PowerPlantManager: C key pressed - hiding all power plants");
             HideAllPowerPlants();
+        }
+
+        if ((Keyboard.current != null && Keyboard.current.pKey.wasPressedThisFrame) ||
+            OVRInput.GetDown(OVRInput.Button.SecondaryHandTrigger))
+        {
+            Debug.Log("PowerPlantManager: p pressed - color based on UENB");
+            ColorPowerPlantsByProvider("TenneT", new Color(1.0f, 0.2f, 0.2f));
+            ColorPowerPlantsByProvider("50Hertz", new Color(0.2f, 0.8f, 0.2f));
+            ColorPowerPlantsByProvider("Amprion", new Color(0.2f, 0.2f, 1.0f));
+            ColorPowerPlantsByProvider("TransnetBW", new Color(1.0f, 0.8f, 0.2f));
+            ColorPowerPlantsByProvider("Unknown", new Color(0.6f, 0.6f, 0.6f));
+
         }
     }
 
