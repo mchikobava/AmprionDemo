@@ -66,43 +66,43 @@ public class PowerPlantManager : MonoBehaviour
     void Awake()
     {
         Debug.Log("PowerPlantManager: Starting automatic initialization...");
-        
+
         // Check references first
         if (germanyRoot == null)
         {
             Debug.LogError("PowerPlantManager: germanyRoot is not assigned!");
             return;
         }
-        
+
         if (csv == null)
         {
             Debug.LogError("PowerPlantManager: csv is not assigned!");
             return;
         }
-        
+
         if (modelFactory == null)
         {
             Debug.LogWarning("PowerPlantManager: modelFactory is not assigned - will use fallback cubes");
         }
-        
+
         Debug.Log("PowerPlantManager: All references are set correctly");
-        
+
         // Calculate world bounds
         CalculateWorldBounds();
-        
+
         // Initialize power plant parent
         InitializePowerPlantParent();
-        
+
         // Load all power plants automatically
         LoadAllPowerPlants();
-        
+
         // Hide all power plants initially
         HideAllPowerPlants();
-        
+
         // Debug: Show what was created
         Debug.Log($"PowerPlantManager: Created {powerPlantParent.childCount} power plant containers");
         Debug.Log($"PowerPlantManager: Tracking {powerPlantsByType.Count} energy types: {string.Join(", ", powerPlantsByType.Keys)}");
-        
+
         Debug.Log("PowerPlantManager: Automatic initialization completed. Use individual keys to show specific power plant types.");
     }
 
@@ -114,7 +114,7 @@ public class PowerPlantManager : MonoBehaviour
     public void VisualizeExistingPowerPlants()
     {
         Debug.Log("PowerPlantManager: Starting VisualizeExistingPowerPlants()");
-        
+
         if (germanyRoot == null)
         {
             Debug.LogError("PowerPlantManager: Please set germanyRoot reference.");
@@ -501,7 +501,7 @@ public class PowerPlantManager : MonoBehaviour
         if (powerPlantsByType.TryGetValue(visibleType, out var plants))
         {
             Debug.Log($"PowerPlantManager: Found {plants.Count} {visibleType} power plants in tracking dictionary");
-            
+
             int shownCount = 0;
             foreach (var plant in plants)
             {
@@ -541,12 +541,13 @@ public class PowerPlantManager : MonoBehaviour
 
         var allModels = powerPlantParent.GetComponentsInChildren<Renderer>();
         Debug.Log($"PowerPlantManager: Found {allModels.Length} renderers to show");
-        
+
         foreach (var renderer in allModels)
         {
             SetPowerPlantVisibility(renderer.gameObject, true);
         }
         Debug.Log($"PowerPlantManager: Showing all {allModels.Length} power plants.");
+
     }
 
     /// <summary>
@@ -569,7 +570,7 @@ public class PowerPlantManager : MonoBehaviour
     public void ApplyDefaultEnergyTypeColors()
     {
         Debug.Log($"PowerPlantManager: Applying default energy type colors to {powerPlantsByType.Count} energy types");
-        
+
         foreach (var kvp in energyColors)
         {
             ColorPowerPlantsByType(kvp.Key, kvp.Value);
@@ -595,12 +596,12 @@ public class PowerPlantManager : MonoBehaviour
     public void CleanupPowerPlants()
     {
         Debug.Log("PowerPlantManager: Starting cleanup of all power plants");
-        
+
         if (powerPlantParent != null)
         {
             int childCount = powerPlantParent.childCount;
             Debug.Log($"PowerPlantManager: Destroying {childCount} power plant containers");
-            
+
             // Disable all colliders first to prevent Oculus Interaction issues
             var allColliders = powerPlantParent.GetComponentsInChildren<Collider>();
             foreach (var collider in allColliders)
@@ -610,7 +611,7 @@ public class PowerPlantManager : MonoBehaviour
                     collider.enabled = false;
                 }
             }
-            
+
             // Disable all renderers
             var allRenderers = powerPlantParent.GetComponentsInChildren<Renderer>();
             foreach (var renderer in allRenderers)
@@ -620,7 +621,7 @@ public class PowerPlantManager : MonoBehaviour
                     renderer.enabled = false;
                 }
             }
-            
+
             // Wait a frame before destroying to let Oculus Interaction system clean up
             StartCoroutine(DestroyAfterFrame());
         }
@@ -636,7 +637,7 @@ public class PowerPlantManager : MonoBehaviour
     System.Collections.IEnumerator DestroyAfterFrame()
     {
         yield return null; // Wait one frame
-        
+
         if (powerPlantParent != null)
         {
 #if UNITY_EDITOR
@@ -645,10 +646,10 @@ public class PowerPlantManager : MonoBehaviour
             Destroy(powerPlantParent.gameObject);
 #endif
         }
-        
+
         // Clear tracking dictionaries
         ClearTrackingDictionaries();
-        
+
         // Reinitialize
         InitializePowerPlantParent();
         Debug.Log("PowerPlantManager: Cleanup completed and new parent initialized.");
@@ -714,13 +715,13 @@ public class PowerPlantManager : MonoBehaviour
     void ProcessExistingMarkers(Transform markersParent, ref int processed)
     {
         Debug.Log($"PowerPlantManager: Processing {markersParent.childCount} fuel groups");
-        
+
         // Process each fuel type group
         for (int i = 0; i < markersParent.childCount; i++)
         {
             var fuelGroup = markersParent.GetChild(i);
             string fuelType = fuelGroup.name;
-            
+
             Debug.Log($"PowerPlantManager: Processing fuel group '{fuelType}' with {fuelGroup.childCount} power plants");
 
             // Process each power plant in this fuel group
@@ -731,14 +732,14 @@ public class PowerPlantManager : MonoBehaviour
                 ProcessExistingPowerPlant(powerPlantContainer, fuelType, ref processed);
             }
         }
-        
+
         Debug.Log($"PowerPlantManager: Finished processing markers. Total processed: {processed}");
     }
 
     void ProcessExistingPowerPlant(Transform container, string fuelType, ref int processed)
     {
         Debug.Log($"PowerPlantManager: Processing container '{container.name}' with {container.childCount} children");
-        
+
         // Log all children to see what's available
         for (int i = 0; i < container.childCount; i++)
         {
@@ -793,7 +794,7 @@ public class PowerPlantManager : MonoBehaviour
         var interactionComponents = modelCopy.GetComponentsInChildren<MonoBehaviour>();
         foreach (var component in interactionComponents)
         {
-            if (component != null && (component.GetType().Name.Contains("Interactable") || 
+            if (component != null && (component.GetType().Name.Contains("Interactable") ||
                                      component.GetType().Name.Contains("Grabbable") ||
                                      component.GetType().Name.Contains("Grab")))
             {
@@ -815,7 +816,7 @@ public class PowerPlantManager : MonoBehaviour
     {
         // Try to extract UENB information from the container hierarchy
         // This is a simplified approach - you might need to adjust based on your actual data structure
-        
+
         // Check if container name contains UENB info
         string containerName = container.name.ToUpperInvariant();
         if (containerName.Contains("TENNET")) return "TenneT";
@@ -1070,7 +1071,7 @@ public class PowerPlantManager : MonoBehaviour
         var interactionComponents = obj.GetComponentsInChildren<MonoBehaviour>();
         foreach (var component in interactionComponents)
         {
-            if (component != null && (component.GetType().Name.Contains("Interactable") || 
+            if (component != null && (component.GetType().Name.Contains("Interactable") ||
                                      component.GetType().Name.Contains("Grabbable") ||
                                      component.GetType().Name.Contains("Grab")))
             {
@@ -1145,94 +1146,61 @@ public class PowerPlantManager : MonoBehaviour
     void Update()
     {
         // Individual power plant type keys
-        if (Keyboard.current != null && Keyboard.current.gKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.numpad0Key.wasPressedThisFrame
+             || OVRInput.GetDown(OVRInput.Button.One))
         {
-            Debug.Log("PowerPlantManager: G key pressed - showing garbage (Abfall) power plants");
+            Debug.Log("PowerPlantManager: 0 key pressed - showing garbage (Abfall) power plants");
             ShowOnlyAbfallPowerPlants();
         }
 
-        if (Keyboard.current != null && Keyboard.current.nKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.numpad1Key.wasPressedThisFrame
+              || OVRInput.GetDown(OVRInput.Button.Two))
         {
-            Debug.Log("PowerPlantManager: N key pressed - showing nuclear (Kernenergie) power plants");
-            ShowOnlyKernenergiePowerPlants();
-        }
-
-        if (Keyboard.current != null && Keyboard.current.mKey.wasPressedThisFrame)
-        {
-            Debug.Log("PowerPlantManager: M key pressed - showing gas (Erdgas) power plants");
+            Debug.Log("PowerPlantManager: 1 key pressed - showing gas (Erdgas) power plants");
             ShowOnlyErdgasPowerPlants();
-        }
-
-        if (Keyboard.current != null && Keyboard.current.hKey.wasPressedThisFrame)
-        {
-            Debug.Log("PowerPlantManager: H key pressed - showing hard coal (Steinkohle) power plants");
-            ShowOnlySteinkohlePowerPlants();
-        }
-
-        if (Keyboard.current != null && Keyboard.current.bKey.wasPressedThisFrame)
-        {
-            Debug.Log("PowerPlantManager: B key pressed - showing brown coal (Braunkohle) power plants");
-            ShowOnlyBraunkohlePowerPlants();
-        }
-
-        if (Keyboard.current != null && Keyboard.current.wKey.wasPressedThisFrame)
-        {
-            Debug.Log("PowerPlantManager: W key pressed - showing wind (Windenergie) power plants");
-            ShowOnlyWindenergiePowerPlants();
-        }
-
-        if (Keyboard.current != null && Keyboard.current.sKey.wasPressedThisFrame)
-        {
-            Debug.Log("PowerPlantManager: S key pressed - showing solar (Solarenergie) power plants");
-            ShowOnlySolarenergiePowerPlants();
-        }
-
-        if (Keyboard.current != null && Keyboard.current.aKey.wasPressedThisFrame)
-        {
-            Debug.Log("PowerPlantManager: A key pressed - showing hydro (Wasserkraft) power plants");
-            ShowOnlyWasserkraftPowerPlants();
-        }
-
-        if (Keyboard.current != null && Keyboard.current.iKey.wasPressedThisFrame)
-        {
-            Debug.Log("PowerPlantManager: I key pressed - showing biogas power plants");
             ShowOnlyBiogasPowerPlants();
-        }
-
-        if (Keyboard.current != null && Keyboard.current.oKey.wasPressedThisFrame)
-        {
-            Debug.Log("PowerPlantManager: O key pressed - showing oil (Mineraloelprodukte) power plants");
-            ShowOnlyMineraloelproduktePowerPlants();
-        }
-
-        if (Keyboard.current != null && Keyboard.current.kKey.wasPressedThisFrame)
-        {
-            Debug.Log("PowerPlantManager: K key pressed - showing coupling gas (Kuppelgas) power plants");
             ShowOnlyKuppelgasPowerPlants();
         }
 
-        if (Keyboard.current != null && Keyboard.current.tKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.numpad2Key.wasPressedThisFrame
+              || OVRInput.GetDown(OVRInput.Button.Three))
         {
-            Debug.Log("PowerPlantManager: T key pressed - showing other (Sonstige) power plants");
+            Debug.Log("PowerPlantManager: 2 key pressed - showing hard coal (Steinkohle) power plants");
+            ShowOnlySteinkohlePowerPlants();
+            ShowOnlyBraunkohlePowerPlants();
+        }
+
+        if (Keyboard.current != null && Keyboard.current.numpad3Key.wasPressedThisFrame
+              || OVRInput.GetDown(OVRInput.Button.Four))
+        {
+            Debug.Log("PowerPlantManager: 3 key pressed - showing nuclear (Kernenergie) power plants");
+            ShowOnlyKernenergiePowerPlants();
+        }
+
+        if (Keyboard.current != null && Keyboard.current.numpad4Key.wasPressedThisFrame)
+        {
+            Debug.Log("PowerPlantManager: 4 key pressed - showing oil (Mineraloelprodukte) power plants");
+            ShowOnlyMineraloelproduktePowerPlants();
+        }
+
+        if (Keyboard.current != null && Keyboard.current.numpad5Key.wasPressedThisFrame)
+        {
+            Debug.Log("PowerPlantManager: 5 key pressed - showing hydro (Wasserkraft) power plants");
+            ShowOnlyWasserkraftPowerPlants();
             ShowOnlySonstigePowerPlants();
         }
 
         // Show all power plants on Space key
-        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame
+        || OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger))
         {
             Debug.Log("PowerPlantManager: Space key pressed - showing all power plants");
             ShowAllPowerPlants();
         }
 
-        // Test visibility on V key
-        if (Keyboard.current != null && Keyboard.current.vKey.wasPressedThisFrame)
-        {
-            Debug.Log("PowerPlantManager: V key pressed - testing visibility");
-            TestVisibility();
-        }
-
         // Hide all power plants on C key
-        if (Keyboard.current != null && Keyboard.current.cKey.wasPressedThisFrame)
+        if (Keyboard.current != null && Keyboard.current.cKey.wasPressedThisFrame
+              || OVRInput.GetDown(OVRInput.Button.SecondaryHandTrigger))
         {
             Debug.Log("PowerPlantManager: C key pressed - hiding all power plants");
             HideAllPowerPlants();
@@ -1251,25 +1219,25 @@ public class PowerPlantManager : MonoBehaviour
         }
 
         Debug.Log($"PowerPlantManager: Testing visibility - Found {powerPlantParent.childCount} power plant containers");
-        
+
         for (int i = 0; i < Mathf.Min(5, powerPlantParent.childCount); i++) // Test first 5
         {
             var container = powerPlantParent.GetChild(i);
             Debug.Log($"PowerPlantManager: Container {i}: '{container.name}' - Active: {container.gameObject.activeInHierarchy}");
-            
+
             // Check if it has a model child
             for (int j = 0; j < container.childCount; j++)
             {
                 var child = container.GetChild(j);
                 Debug.Log($"PowerPlantManager:   Child {j}: '{child.name}' - Active: {child.gameObject.activeInHierarchy}");
-                
+
                 // Check renderer on this child
                 var renderer = child.GetComponent<Renderer>();
                 if (renderer != null)
                 {
                     Debug.Log($"PowerPlantManager:     Renderer on '{child.name}' enabled: {renderer.enabled}, visible: {renderer.isVisible}");
                 }
-                
+
                 // Check renderers in children of this child (like "default")
                 var childRenderers = child.GetComponentsInChildren<Renderer>();
                 foreach (var childRenderer in childRenderers)
@@ -1281,19 +1249,19 @@ public class PowerPlantManager : MonoBehaviour
                 }
             }
         }
-        
+
         // Force show first few power plants
         Debug.Log("PowerPlantManager: Force showing first 3 power plants...");
         for (int i = 0; i < Mathf.Min(3, powerPlantParent.childCount); i++)
         {
             var container = powerPlantParent.GetChild(i);
             container.gameObject.SetActive(true);
-            
+
             for (int j = 0; j < container.childCount; j++)
             {
                 var child = container.GetChild(j);
                 child.gameObject.SetActive(true);
-                
+
                 var renderer = child.GetComponent<Renderer>();
                 if (renderer != null)
                 {
@@ -1327,7 +1295,7 @@ public class PowerPlantManager : MonoBehaviour
     /// </summary>
     void SetPowerPlantVisibility(GameObject powerPlant, bool visible)
     {
-        if (powerPlant == null) 
+        if (powerPlant == null)
         {
             Debug.LogWarning("PowerPlantManager: SetPowerPlantVisibility called with null GameObject");
             return;
@@ -1344,7 +1312,7 @@ public class PowerPlantManager : MonoBehaviour
         // Find all renderers in children (including nested children)
         var renderers = powerPlant.GetComponentsInChildren<Renderer>(true); // Include inactive objects
         Debug.Log($"PowerPlantManager: Found {renderers.Length} renderers in '{powerPlant.name}' and its children");
-        
+
         foreach (var renderer in renderers)
         {
             if (renderer != null)
@@ -1367,7 +1335,7 @@ public class PowerPlantManager : MonoBehaviour
             {
                 child.gameObject.SetActive(active);
                 Debug.Log($"PowerPlantManager: Set child '{child.name}' active to {active}");
-                
+
                 // Recursively set children of children
                 SetChildrenActiveRecursive(child, active);
             }
