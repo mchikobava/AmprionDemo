@@ -1170,8 +1170,15 @@ public class PowerPlantManager : MonoBehaviour
             ShowOnlyBraunkohlePowerPlants();
         }
 
-        if (Keyboard.current != null && Keyboard.current.numpad3Key.wasPressedThisFrame
+        if (Keyboard.current != null && Keyboard.current.numpad5Key.wasPressedThisFrame
               || OVRInput.GetDown(OVRInput.Button.Four))
+        {
+            Debug.Log("PowerPlantManager: 5 key pressed - showing hydro (Wasserkraft) power plants");
+            ShowOnlyWasserkraftPowerPlants();
+            ShowOnlySonstigePowerPlants();
+        }
+
+        if (Keyboard.current != null && Keyboard.current.numpad3Key.wasPressedThisFrame)
         {
             Debug.Log("PowerPlantManager: 3 key pressed - showing nuclear (Kernenergie) power plants");
             ShowOnlyKernenergiePowerPlants();
@@ -1183,12 +1190,7 @@ public class PowerPlantManager : MonoBehaviour
             ShowOnlyMineraloelproduktePowerPlants();
         }
 
-        if (Keyboard.current != null && Keyboard.current.numpad5Key.wasPressedThisFrame)
-        {
-            Debug.Log("PowerPlantManager: 5 key pressed - showing hydro (Wasserkraft) power plants");
-            ShowOnlyWasserkraftPowerPlants();
-            ShowOnlySonstigePowerPlants();
-        }
+
 
         // Show all power plants on Space key
         if (Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame
